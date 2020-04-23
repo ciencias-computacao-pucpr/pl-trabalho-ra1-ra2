@@ -72,6 +72,7 @@ executa(3) :-
     writeln(CEP),
     writeln('Celular: '),
     writeln(CELULAR),
+    prog.
 
 executa(6):-
     write('\e[2J'),
