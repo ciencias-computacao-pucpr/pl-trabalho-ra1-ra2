@@ -84,6 +84,13 @@ executa(6):-
     read(_),
     prog.
 
+executa(7):-
+    write('\e[2J'),
+    consult('banco.pl'),
+    writeln('Salvo com sucesso. Digite qualquer coisa para continuar.'),
+    read(_),
+    prog.
+
 executa(_):-
     writeln('default - nao vai mostrar isto depois'),
     read(_),
