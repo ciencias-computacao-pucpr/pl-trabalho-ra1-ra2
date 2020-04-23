@@ -1,4 +1,5 @@
 :- dynamic contribuinte/11.
+:- dynamic dependente/4.
 
 prog:-
     write('\e[2J'),
@@ -71,6 +72,14 @@ executa(3) :-
     writeln(CEP),
     writeln('Celular: '),
     writeln(CELULAR),
+
+executa(6):-
+    write('\e[2J'),
+    tell('banco.pl'),
+    listing(contribuinte/11),
+    listing(dependente/4),
+    told,
+    writeln('Salvo com sucesso. Digite qualquer coisa para continuar.'),
     read(_),
     prog.
 
