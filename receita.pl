@@ -12,7 +12,7 @@ prog:-
     writeln('6. Salvar   Dados   em   Arquivo'),
     writeln('7. Carregar  Dados  de  Arquivo'),
     writeln('8. Limpar Dados de Cadastro'),
-    writeln('9. Encerrar    '),
+    writeln('9. Encerrar'),
     read(ENTRADA),
     ENTRADA =\= 9,
     executa( ENTRADA ),
@@ -22,5 +22,13 @@ prog:-
     nl,
     write('Saindo!').
 
-executa:-
-    writeln('default - nao vai mostrar isto depois')
+executa(1):-
+    write('\e[2J'),
+    writeln('CADASTRO DE CONTRIBUINTE'),
+    writeln('')
+
+executa(_):-
+    writeln('default - nao vai mostrar isto depois'),
+    read(_),
+    prog.
+
