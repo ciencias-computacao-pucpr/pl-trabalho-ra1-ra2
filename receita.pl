@@ -1,3 +1,5 @@
+:- dynamic contribuinte/11.
+
 prog:-
     write('\e[2J'),
     nl,
@@ -24,7 +26,25 @@ prog:-
 
 executa(1):-
     write('\e[2J'),
-    writeln('CADASTRO DE CONTRIBUINTE').
+    writeln('CADASTRO DE CONTRIBUINTE'),
+    nl,
+    write('CPF '), read(CPF),
+    write('NOME: '), read(NOME),
+    write('Gênero (fem. ou masc.): '), read(GENERO),
+    write('Renda anual: '), read(RENDA),
+    write('Logradouro: '), read(LOGR),
+    write('Número: '), read(NUM),
+    write('Completo: '), read(COMPL),
+    write('Cidade: '), read(CIDADE),
+    write('Estado: '), read(ESTADO),
+    write('CEP: '), read(CEP),
+    write('Celular: '), read(CELULAR),
+    assert(contribuinte(CPF,NOME, GENERO,RENDA,LOGR,NUM,COMPL,CIDADE,ESTADO,CEP,CELULAR)),
+    writeln('Cadastrado com sucesso. Digite qualquer coisa para continuar.'),
+    read(_),
+    prog.
+
+
 
 executa(_):-
     writeln('default - nao vai mostrar isto depois'),
