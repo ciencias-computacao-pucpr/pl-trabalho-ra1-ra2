@@ -45,6 +45,34 @@ executa(1):-
     read(_),
     prog.
 
+
+executa(3) :-
+    writeln('Localizar contribuinte pelo CPF'),
+    read(CPF),
+    contribuinte(CPF, NOME, GENERO,RENDA,LOGR,NUM,COMPL,CIDADE,ESTADO,CEP,CELULAR),
+    writeln('CPF: '),
+    writeln(CPF),
+    writeln('Nome: '),
+    writeln(NOME),
+    writeln('Genero: '),
+    writeln(GENERO),
+    writeln('Renda: '),
+    writeln(RENDA),
+    writeln('Logradouro: '),
+    writeln(LOGR),
+    writeln('Número: '),
+    writeln(NUM),
+    writeln('Complemento: '),
+    writeln(COMPL),
+    writeln('Cidade: '),
+    writeln(CIDADE),
+    writeln('Estado: '),
+    writeln(ESTADO),
+    writeln('Cep: '),
+    writeln(CEP),
+    writeln('Celular: '),
+    writeln(CELULAR),
+
 executa(6):-
     write('\e[2J'),
     tell('banco.pl'),
