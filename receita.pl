@@ -24,8 +24,7 @@ prog:-
 
 executa(1):-
     write('\e[2J'),
-    writeln('CADASTRO DE CONTRIBUINTE'),
-    writeln('')
+    writeln('CADASTRO DE CONTRIBUINTE').
 
 executa(_):-
     writeln('default - nao vai mostrar isto depois'),
