@@ -1,4 +1,5 @@
 :- dynamic contribuinte/11.
+:- dynamic dependente/4.
 
 prog:-
     write('\e[2J'),
@@ -41,6 +42,16 @@ executa(1):-
     writeln('Celular: '), read(CELULAR),
     assert(contribuinte(CPF,NOME, GENERO,RENDA,LOGR,NUM,COMPL,CIDADE,ESTADO,CEP,CELULAR)),
     writeln('Cadastrado com sucesso. Digite qualquer coisa para continuar.'),
+    read(_),
+    prog.
+
+executa(6):-
+    write('\e[2J'),
+    tell('banco.pl'),
+    listing(contribuinte/11),
+    listing(dependente/4),
+    told,
+    writeln('Salvo com sucesso. Digite qualquer coisa para continuar.'),
     read(_),
     prog.
 
