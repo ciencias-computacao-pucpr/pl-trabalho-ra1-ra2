@@ -68,6 +68,7 @@ executa(2):-
     prog.
 
 executa(3) :-
+    write('\e[2J'),
     writeln('Localizar contribuinte pelo CPF'),
     read(CPF),
     contribuinte(CPF, NOME, GENERO,RENDA,LOGR,NUM,COMPL,CIDADE,ESTADO,CEP,CELULAR),
@@ -85,6 +86,21 @@ executa(3) :-
     writeln('-------- DEPENTES ----------'),
     listar_dependentes(CPF),
     writeln('Digite qualquer coisa para continuar.'),
+    read(_),
+    prog.
+
+executa(3):-
+    write('\e[2J'),
+    writeln('CPF não existe. Digite qualquer coisa para continuar.'),
+    read(_),
+    prog.
+
+executa(4):-
+    write('\e[2J'),
+    writeln('CPF: '),read(CPF),
+    retractall(contribuinte(CPF,_,_,_,_,_,_,_,_,_,_)),
+    retractall(dependente(CPF,_,_,_)),
+    writeln('Dados limpos. Digite qualquer coisa para continuar.'),
     read(_),
     prog.
 
