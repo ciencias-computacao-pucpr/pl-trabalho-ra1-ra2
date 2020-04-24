@@ -2,11 +2,14 @@
 :- dynamic dependente/4.
 :- dynamic a_dependente/4.
 :- dynamic desconto/1.
+:- dynamic renda_total/1.
 
 multifile(contribuinte).
 multifile(dependente).
 
 prog:-
+    retractall(renda_total(_)),
+    assert(renda_total(0)),
     write('\e[2J'),
     nl,
     write(' MENU '),
@@ -16,7 +19,7 @@ prog:-
     writeln('2. Incluir Dependente'),
     writeln('3. Localizar Contribuinte pelo CPF'),
     writeln('4. Excluir Contribuinte  e  seus  Dependentes'),
-    writeln('5. Relatóriode Contribuintes'),
+    writeln('5. Relatório de Contribuintes'),
     writeln('6. Salvar   Dados   em   Arquivo'),
     writeln('7. Carregar  Dados  de  Arquivo'),
     writeln('8. Limpar Dados de Cadastro'),
@@ -93,29 +96,32 @@ executa(3) :-
 
 executa(5):-
     contribuinte(CPF, NOME, GENERO,RENDA,LOGR,NUM,COMPL,CIDADE,ESTADO,CEP,CELULAR),
+    retract(renda_total(RENDA_ACUMULADA)),
+    RENDA_TOTAL is RENDA_ACUMULADA + RENDA,
+    assert(renda_total(RENDA_TOTAL)),
     retractall(desconto(_)),
     assert(desconto(0)),
     procura_dependentes(CPF),
     desconto(VALOR),
-    writeln('CPF: '), writeln(CPF),
-    writeln('Nome: '), writeln(NOME),
-    writeln('Genero: '), writeln(GENERO),
-    writeln('Renda: '), writeln(RENDA),
-    writeln('Logradouro: '), writeln(LOGR),
-    writeln('Número: '), writeln(NUM),
-    writeln('Complemento: '), writeln(COMPL),
-    writeln('Cidade: '), writeln(CIDADE),
-    writeln('Estado: '), writeln(ESTADO),
-    writeln('Cep: '), writeln(CEP),
-    writeln('Celular: '), writeln(CELULAR),
+    write('CPF: '), write(CPF),tab(4),   write('| Nome: '), writeln(NOME),
+    write('Genero: '), write(GENERO), tab(4),  write('| Renda: '), writeln(RENDA),
+    write('Logradouro: '), write(LOGR),tab(4), write('| Número: '), writeln(NUM),
+    write('Complemento: '), write(COMPL),tab(4), write('| Cidade: '), writeln(CIDADE),
+    write('Estado: '), write(ESTADO),tab(4), write('| Cep: '), writeln(CEP),
+    write('Celular: '), writeln(CELULAR),
     nl,
-    writeln('Desconto IPRF: '),
+    write('Desconto IPRF: '),
     writeln(VALOR),
     writeln('-------- DEPENTES ----------'),
     listar_dependentes(CPF),
-   fail.
+    fail.
 
-executa(5):- true.
+executa(5):-
+    renda_total(RENDA_TOTAL),
+    write('Renda total: '),writeln(RENDA_TOTAL),
+    writeln('Digite qualquer coisa para continuar.'),
+    read(_),
+    prog.
 
 executa(3):-
     write('\e[2J'),
