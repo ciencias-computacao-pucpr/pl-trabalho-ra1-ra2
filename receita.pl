@@ -1,5 +1,8 @@
 :- dynamic contribuinte/11.
 :- dynamic dependente/4.
+:- dynamic a_dependente/4.
+multifile(contribuinte).
+multifile(dependente).
 
 prog:-
     write('\e[2J'),
@@ -8,7 +11,7 @@ prog:-
     nl,
     writeln('Escolha uma opção: '),
     writeln('1. Incluir Contribuinte'),
-    writeln('2. Incluir   Dependente'),
+    writeln('2. Incluir Dependente'),
     writeln('3. Localizar Contribuinte pelo CPF'),
     writeln('4. Excluir Contribuinte  e  seus  Dependentes'),
     writeln('5. Relatóriode Contribuintes'),
@@ -18,8 +21,8 @@ prog:-
     writeln('9. Encerrar'),
     read(ENTRADA),
     ENTRADA =\= 9,
-    executa( ENTRADA ),
-    prog.
+    executa( ENTRADA ).
+
 prog:-    
     write('\e[2J'),
     nl,
@@ -40,38 +43,49 @@ executa(1):-
     writeln('Estado: '), read(ESTADO),
     writeln('CEP: '), read(CEP),
     writeln('Celular: '), read(CELULAR),
-    assert(contribuinte(CPF,NOME, GENERO,RENDA,LOGR,NUM,COMPL,CIDADE,ESTADO,CEP,CELULAR)),
+    assert(contribuinte(CPF,NOME, GENERO,RENDA,LOGR,NUM,COMPL,CIDADE,ESTADO,CEP,CELULAR)),    
     writeln('Cadastrado com sucesso. Digite qualquer coisa para continuar.'),
     read(_),
     prog.
 
+executa(2):-
+    write('\e[2J'),
+    writeln('CADASTRO DE DEPENDENTE'),
+    nl,
+    writeln('CPF DO RESPONSAVEL: '),read(CPF),
+    contribuinte(CPF,_,_,_,_,_,_,_,_,_,_),
+    writeln('Nome: '), read(NOME),
+    writeln('Idade: '), read(IDADE),
+    writeln('Gênero (fem. ou masc.): '), read(GENERO),
+    assert(dependente(CPF,NOME, IDADE, GENERO)),
+    writeln('Cadastrado com sucesso. Digite qualquer coisa para continuar.'),
+    read(_),
+    prog.
+
+executa(2):-
+    writeln('cpf não existe, digite algo para voltar ao menu'),
+    read(_),
+    prog.
 
 executa(3) :-
     writeln('Localizar contribuinte pelo CPF'),
     read(CPF),
     contribuinte(CPF, NOME, GENERO,RENDA,LOGR,NUM,COMPL,CIDADE,ESTADO,CEP,CELULAR),
-    writeln('CPF: '),
-    writeln(CPF),
-    writeln('Nome: '),
-    writeln(NOME),
-    writeln('Genero: '),
-    writeln(GENERO),
-    writeln('Renda: '),
-    writeln(RENDA),
-    writeln('Logradouro: '),
-    writeln(LOGR),
-    writeln('Número: '),
-    writeln(NUM),
-    writeln('Complemento: '),
-    writeln(COMPL),
-    writeln('Cidade: '),
-    writeln(CIDADE),
-    writeln('Estado: '),
-    writeln(ESTADO),
-    writeln('Cep: '),
-    writeln(CEP),
-    writeln('Celular: '),
-    writeln(CELULAR),
+    writeln('CPF: '), writeln(CPF),
+    writeln('Nome: '), writeln(NOME),
+    writeln('Genero: '), writeln(GENERO),
+    writeln('Renda: '), writeln(RENDA),
+    writeln('Logradouro: '), writeln(LOGR),
+    writeln('Número: '), writeln(NUM),
+    writeln('Complemento: '), writeln(COMPL),
+    writeln('Cidade: '), writeln(CIDADE),
+    writeln('Estado: '), writeln(ESTADO),
+    writeln('Cep: '), writeln(CEP),
+    writeln('Celular: '), writeln(CELULAR),
+    writeln('-------- DEPENTES ----------'),
+    listar_dependentes(CPF),
+    writeln('Digite qualquer coisa para continuar.'),
+    read(_),
     prog.
 
 executa(6):-
@@ -87,12 +101,24 @@ executa(6):-
 executa(7):-
     write('\e[2J'),
     consult('banco.pl'),
-    writeln('Salvo com sucesso. Digite qualquer coisa para continuar.'),
+    writeln('Dados carregados. Digite qualquer coisa para continuar.'),
     read(_),
     prog.
 
-executa(_):-
-    writeln('default - nao vai mostrar isto depois'),
+executa(8):-
+    write('\e[2J'),
+    retractall(contribuinte(_,_,_,_,_,_,_,_,_,_,_)),
+    retractall(dependente(_,_,_,_)),
+    writeln('Dados limpos. Digite qualquer coisa para continuar.'),
     read(_),
     prog.
 
+listar_dependentes(CPF):-
+    dependente(CPF, NOME, GENERO, IDADE),
+    write('Nome: '), writeln(NOME),
+    write('Genero: '), writeln(GENERO),
+    write('Idade: '), writeln(IDADE),
+    writeln('--------------------------'),
+    fail.
+
+listar_dependentes(_):-true.
