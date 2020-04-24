@@ -1,6 +1,8 @@
 :- dynamic contribuinte/11.
 :- dynamic dependente/4.
 :- dynamic a_dependente/4.
+:- dynamic desconto/1.
+
 multifile(contribuinte).
 multifile(dependente).
 
@@ -88,6 +90,32 @@ executa(3) :-
     read(_),
     prog.
 
+executa(5):-
+    contribuinte(CPF, NOME, GENERO,RENDA,LOGR,NUM,COMPL,CIDADE,ESTADO,CEP,CELULAR),
+    retractall(desconto(_)),
+    assert(desconto(0)),
+    procura_dependentes(CPF),
+    desconto(VALOR),
+    writeln('CPF: '), writeln(CPF),
+    writeln('Nome: '), writeln(NOME),
+    writeln('Genero: '), writeln(GENERO),
+    writeln('Renda: '), writeln(RENDA),
+    writeln('Logradouro: '), writeln(LOGR),
+    writeln('Número: '), writeln(NUM),
+    writeln('Complemento: '), writeln(COMPL),
+    writeln('Cidade: '), writeln(CIDADE),
+    writeln('Estado: '), writeln(ESTADO),
+    writeln('Cep: '), writeln(CEP),
+    writeln('Celular: '), writeln(CELULAR),
+    nl,
+    writeln('Desconto IPRF: '),
+    writeln(VALOR),
+    writeln('-------- DEPENTES ----------'),
+    listar_dependentes(CPF),
+   fail.
+
+executa(5):- true.
+
 executa(6):-
     write('\e[2J'),
     tell('banco.pl'),
@@ -122,3 +150,15 @@ listar_dependentes(CPF):-
     fail.
 
 listar_dependentes(_):-true.
+
+procura_dependentes(CPF) :-
+    dependente(CPF, _, _, _),
+    retract(desconto(TOTAL)),
+    RESULTADO is TOTAL + 1200,
+    assert(desconto(RESULTADO)),
+    % writeln(TOTAL),
+    fail.
+
+procura_dependentes(_) :- true.
+    
+
